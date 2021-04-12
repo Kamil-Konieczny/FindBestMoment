@@ -1,0 +1,84 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>FindBestMoment</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link href = "css/bootstrap.css" rel = "stylesheet"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link href = "css/bootstrap.css" rel = "stylesheet"/>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="card.css">
+    <link  rel="stylesheet"href="all.min.css">
+</head>
+
+<body>
+<div class="header">
+<img src="logo.jpg" height="50vh" style="margin-top:1%; ">
+
+<form class="example" action="/action_page.php">
+    <input type="text" placeholder="Search.." name="search">
+    <button type="submit">
+<!--        <i class="fa fa-search"></i>-->
+        Search</button>
+</form>
+</div>
+<div class = "stocks_container" >
+    <tr th:each="stock: ${hot_stocks}">
+    <div class="card">
+        <div class="card_header">
+        <img id="country_flag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_the_United_States_%281777%E2%80%931795%29.svg/1280px-Flag_of_the_United_States_%281777%E2%80%931795%29.svg.png" alt="Avatar"  >
+
+            <h1  th:text="${stock.symbol}" >AAPL</h1>
+           </div>
+        <h6 style="text-align: center;" th:text="${stock.getQuoteType().getShortName()}"></h6>
+
+        <div class="card_body">
+
+            <div class="price_area">
+                <div class="main_price" th:text="${stock.getPrice().getRegularMarketPrice().getFmt()}"></div>
+                <div class ="main_percentage" th:style="${stock.getPrice().getRegularMarketChange().getFtmDouble() &gt; 0 ? 'color:#009933;':'color:#cc0000;'}"  th:text="${stock.getPrice().getRegularMarketChange().getFtmDouble()}+'('+${stock.getPrice().getRegularMarketChangePercent().getFmt()}+ ')'"></div>
+
+            </div>
+                <div class="after_hours">
+                <p class ="after_hours_percentage" style="float: left;margin-left: 10%;">After hours:</p>
+<!--                <p class ="after_hours_percentage" th:if="${gainer.getPrice().getPostMarketChangePercent().getFmt()}" th:text="${gainer.getPrice().getPostMarketChangePercent().getFmt()}">0.0</p>-->
+                    <p class ="after_hours_percentage" >0.0</p>
+                </div>
+            </div>
+        <div style="display: flex;  font-family:Arial;">Trends:</div>
+
+        <div class="card_bottom">
+        <div class="short_trend">
+            <div th:if="${teacher.gender == 'F'}" class="arrow-up"></div>
+            <p>Short</p>
+        </div>
+        <div class="mid_trend">
+            <div class="arrow-down"></div>
+            <p>Mid</p>
+
+        </div>
+        <div class="long_trend">
+            <div class="arrow-up"></div>
+            <p>Long</p>
+
+        </div>
+    </div>
+        </div>
+    </div>
+    </tr>
+
+
+
+
+
+</div>
+</body>
+</html>
