@@ -18,14 +18,7 @@
 .container {
     padding: 2px 16px;
 }
-#country_flag
-{
-    opacity: 0.9;
-    margin-top:3%;
-    margin-left: 3%;
-    width: 30%;
-    height: 15%;
-}
+
 .card_header
 {
     text-align: center;
@@ -41,7 +34,8 @@
     font-size: 3.5vh;
     margin-top: 1.5%;
     margin-bottom: 0px;
-    margin-left: 10%;
+    margin-left:auto;
+    margin-right: auto;
 }
 .main_price
 {
@@ -77,10 +71,6 @@ display: block;
     text-align: center;
     font-family: "Arial" ;
 }
-#symbol
-{
-    margin-top: 20%;
-}
 
 .after_hours
 {
@@ -114,6 +104,12 @@ margin-left: 10%;
     border-bottom: 17px solid #00802b;
     margin-bottom: 8%;
 }
+.neutral-arrow {
+    opacity: 0.4;
+    width: 30px;
+    border-bottom: 7px solid grey;
+    margin-bottom: 8%;
+}
 .short_trend
 {
     text-align: center;
@@ -122,7 +118,6 @@ margin-left: 10%;
 .mid_trend
 {
     text-align: center;
-
     margin-right: 15%;
 }
 .long_trend

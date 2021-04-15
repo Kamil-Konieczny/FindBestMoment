@@ -1,6 +1,7 @@
 package com.findbestmoment.findbestmoment.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.findbestmoment.findbestmoment.pojos.auto_complete.Auto_example;
 import com.findbestmoment.findbestmoment.pojos.biggestMovers.Example;
 import com.findbestmoment.findbestmoment.pojos.chart.Chart;
 import com.findbestmoment.findbestmoment.pojos.biggestMovers.Result;
@@ -24,7 +25,7 @@ public class StockService {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&symbol=" + symbol + "&range=1d&region=US"))
-                    .header("x-rapidapi-key", "621db74435msh4f1b5da8691db90p1450a3jsnbd3d5031f898")
+                    .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
                     .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
@@ -43,7 +44,7 @@ public class StockService {
     public List<Result> getMovers() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-movers?region=US&lang=en-US&start=0&count=6"))
-                .header("x-rapidapi-key", "621db74435msh4f1b5da8691db90p1450a3jsnbd3d5031f898")
+                .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -57,7 +58,7 @@ public class StockService {
     public SummaryExample getSummary(String symbol) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?symbol="+symbol+"&region=US"))
-                .header("x-rapidapi-key", "621db74435msh4f1b5da8691db90p1450a3jsnbd3d5031f898")
+                .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -68,4 +69,17 @@ public class StockService {
         return example;
     }
 
+    public Auto_example auto_complete(String symbol) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete?q="+symbol+"&region=US"))
+                .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
+                .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse.BodyHandlers.ofString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Auto_example auto_example = objectMapper.readValue(response.body(),Auto_example.class);
+        return auto_example;
+    }
 }

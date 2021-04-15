@@ -21,22 +21,21 @@
 
 <body>
 <div class="header">
+    <a th:href="@{/findbestmoment}">
 <img src="logo.jpg" height="50vh" style="margin-top:1%; ">
-
-<form class="example" action="/action_page.php">
-    <input type="text" placeholder="Search.." name="search">
-    <button type="submit">
-<!--        <i class="fa fa-search"></i>-->
-        Search</button>
+    </a>
+<form class="example" th:action="@{/search}" method="get">
+    <input type="text" placeholder="Search.." name="symbol" id="symbol">
+    <button type="submit">Search</button>
 </form>
 </div>
 <div class = "stocks_container" >
+
     <tr th:each="stock: ${hot_stocks}">
+        <a th:href="@{/chart/{stock_symbol}(stock_symbol=${stock.symbol})}">
     <div class="card">
         <div class="card_header">
-        <img id="country_flag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_the_United_States_%281777%E2%80%931795%29.svg/1280px-Flag_of_the_United_States_%281777%E2%80%931795%29.svg.png" alt="Avatar"  >
-
-            <h1  th:text="${stock.symbol}" >AAPL</h1>
+            <h1 name="choosen_stock" id="choosen_stock"  th:text="${stock.symbol}" ></h1>
            </div>
         <h6 style="text-align: center;" th:text="${stock.getQuoteType().getShortName()}"></h6>
 
@@ -49,30 +48,51 @@
             </div>
                 <div class="after_hours">
                 <p class ="after_hours_percentage" style="float: left;margin-left: 10%;">After hours:</p>
-<!--                <p class ="after_hours_percentage" th:if="${gainer.getPrice().getPostMarketChangePercent().getFmt()}" th:text="${gainer.getPrice().getPostMarketChangePercent().getFmt()}">0.0</p>-->
-                    <p class ="after_hours_percentage" >0.0</p>
+                <p class ="after_hours_percentage" th:if="${stock.getPrice().getMarketState()=='REGULAR' and stock.getPrice().getExchangeName()!='Other OTC'}" >0.0</p>
+                    <p class ="after_hours_percentage" th:if="${stock.getPrice().getMarketState()=='POST' and stock.getPrice().getExchangeName()!='Other OTC'}" th:style="${stock.getPrice().getPostMarketChangePercent().getRaw() &gt; 0 ? 'color:#009933;':'color:#cc0000;'}"  th:text="${stock.getPrice().getPostMarketChangePercent().getFmt()}"></p>
+                    <p class ="after_hours_percentage" th:if=" ${stock.getPrice().getExchangeName()=='Other OTC'}">--.--</p>
+                    <p class ="after_hours_percentage" th:if="${stock.getPrice().getMarketState()=='PRE' and stock.getPrice().getExchangeName()!='Other OTC'}" th:style="${stock.getPrice().getPreMarketChangePercent().getRaw() &gt; 0 ? 'color:#009933;':'color:#cc0000;'}"  th:text="${stock.getPrice().getPreMarketChangePercent().getFmt()}"></p>
                 </div>
             </div>
         <div style="display: flex;  font-family:Arial;">Trends:</div>
 
         <div class="card_bottom">
         <div class="short_trend">
-            <div th:if="${teacher.gender == 'F'}" class="arrow-up"></div>
+            <div th:if="${stock.getPageViews().getShortTermTrend()=='UP'}" class="arrow-up"></div>
+            <div th:if="${stock.getPageViews().getShortTermTrend()=='DOWN'}" class="arrow-down"></div>
+            <div th:if="${stock.getPageViews().getShortTermTrend()=='NEUTRAL'}" class="neutral-arrow"></div>
+            <div th:if="${stock.getPageViews().getShortTermTrend()==null}" class="neutral-arrow"></div>
+            <div th:if="${stock.getPageViews().getShortTermTrend()=='NONE'}" class="neutral-arrow"></div>
+
             <p>Short</p>
         </div>
         <div class="mid_trend">
-            <div class="arrow-down"></div>
+            <div th:if="${stock.getPageViews().getMidTermTrend()=='UP'}" class="arrow-up"></div>
+            <div th:if="${stock.getPageViews().getMidTermTrend()=='DOWN'}" class="arrow-down"></div>
+            <div th:if="${stock.getPageViews().getMidTermTrend()=='NEUTRAL'}" class="neutral-arrow"></div>
+            <div th:if="${stock.getPageViews().getMidTermTrend()==null}" class="neutral-arrow"></div>
+            <div th:if="${stock.getPageViews().getMidTermTrend()=='NONE'}" class="neutral-arrow"></div>
+
+
             <p>Mid</p>
 
         </div>
         <div class="long_trend">
-            <div class="arrow-up"></div>
+            <div th:if="${stock.getPageViews().getLongTermTrend()=='UP'}" class="arrow-up"></div>
+            <div th:if="${stock.getPageViews().getLongTermTrend()=='DOWN'}" class="arrow-down"></div>
+            <div th:if="${stock.getPageViews().getLongTermTrend()=='NEUTRAL'}" class="neutral-arrow"></div>
+            <div th:if="${stock.getPageViews().getLongTermTrend()==null}" class="neutral-arrow"></div>
+            <div th:if="${stock.getPageViews().getLongTermTrend()=='NONE'}" class="neutral-arrow"></div>
+
             <p>Long</p>
 
         </div>
     </div>
+
         </div>
+        </a>
     </div>
+
     </tr>
 
 
