@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "timestamp",
     "indicators"
 })
-public class Result {
+public class Chart_Result {
 
     @JsonProperty("meta")
     private Meta meta;

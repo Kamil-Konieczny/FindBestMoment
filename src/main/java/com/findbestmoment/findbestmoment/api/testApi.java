@@ -4,6 +4,8 @@ import com.findbestmoment.findbestmoment.pojos.auto_complete.Auto_example;
 import com.findbestmoment.findbestmoment.pojos.biggestMovers.Quote;
 import com.findbestmoment.findbestmoment.pojos.chart.Chart;
 import com.findbestmoment.findbestmoment.pojos.biggestMovers.Result;
+import com.findbestmoment.findbestmoment.pojos.chart.ChartPoint;
+import com.findbestmoment.findbestmoment.pojos.chart.Chart_Result;
 import com.findbestmoment.findbestmoment.pojos.getAnalysis.SummaryExample;
 import com.findbestmoment.findbestmoment.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +27,29 @@ public class testApi {
        @RequestMapping("/chart/{stock_symbol}")
     public String getPrice(@PathVariable("stock_symbol")String stock_symbol,Model model)  {
         Chart chart = stockService.getChart(stock_symbol);
-        model.addAttribute(chart);
-           System.out.println(stock_symbol);
-        return "chart";
+           List<Chart_Result> results = chart.getResult();
+           Chart_Result result = results.get(0);
+           List<com.findbestmoment.findbestmoment.pojos.chart.Quote> quote = result.getIndicators().getQuote();
+
+           List<Double> highs = quote.get(0).getHigh();
+           List<Integer> timestamps = result.getTimestamp();
+
+           List<ChartPoint> chartPoints = new ArrayList<>();
+
+           String symbol = result.getMeta().getSymbol();
+           model.addAttribute("symbol",symbol);
+           model.addAttribute("timestamps",timestamps);
+           model.addAttribute("highs",highs);
+           return "chart";
     }
 
     @GetMapping("/findbestmoment")
     public String findBestMoment(Model model) throws IOException, InterruptedException {
             List<Result> result = stockService.getMovers();
             movers_summary_list.clear();
-
             List<Quote> movers_list = result.get(2).getQuotes();
 
-for(int i=0;i<1;i++)
+            for(int i=0;i<1;i++)
            // for(Quote ele:movers_list)
             {
                 String symbol = movers_list.get(i).getSymbol();

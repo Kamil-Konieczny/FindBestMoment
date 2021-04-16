@@ -5,6 +5,7 @@ import com.findbestmoment.findbestmoment.pojos.auto_complete.Auto_example;
 import com.findbestmoment.findbestmoment.pojos.biggestMovers.Example;
 import com.findbestmoment.findbestmoment.pojos.chart.Chart;
 import com.findbestmoment.findbestmoment.pojos.biggestMovers.Result;
+import com.findbestmoment.findbestmoment.pojos.chart.Chart_example;
 import com.findbestmoment.findbestmoment.pojos.getAnalysis.SummaryExample;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,22 +22,25 @@ import java.util.List;
 @Service
 public class StockService {
 
-    public Chart getChart(final String symbol) {
+    public Chart getChart(final String symbol)  {
         try {
+
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=5m&symbol=" + symbol + "&range=1d&region=US"))
-                    .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
+                    .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=AAPL&range=1mo&region=US"))
+                    .header("x-rapidapi-key", "0c937b13c3msh7628507d9c0e59dp1e12bajsn9a74a33001f8")
                     .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                     .method("GET", HttpRequest.BodyPublishers.noBody())
                     .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             HttpResponse.BodyHandlers.ofString();
             ObjectMapper objectMapper = new ObjectMapper();
-            Chart chart = objectMapper.readValue(response.body(), Chart.class);
-
-
+            Chart_example myPojo = objectMapper.readValue(response.body(), Chart_example.class);
+            Chart chart = myPojo.getChart();
             return chart;
-        } catch (IOException | InterruptedException x) {
+        }
+        catch (IOException | InterruptedException x)
+        {
+            System.out.println("api error");
         }
         return null;
     }

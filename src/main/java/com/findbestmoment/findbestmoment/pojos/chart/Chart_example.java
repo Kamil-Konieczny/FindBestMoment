@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "chart"
 })
-public class Example {
+public class Chart_example {
 
     @JsonProperty("chart")
     private Chart chart;

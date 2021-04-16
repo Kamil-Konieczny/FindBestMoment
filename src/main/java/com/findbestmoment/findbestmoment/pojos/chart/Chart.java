@@ -19,20 +19,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Chart {
 
     @JsonProperty("result")
-    private List<Result> result = null;
+    private List<Chart_Result> chartResult = null;
     @JsonProperty("error")
     private Object error;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("result")
-    public List<Result> getResult() {
-        return result;
+    public List<Chart_Result> getResult() {
+        return chartResult;
     }
 
     @JsonProperty("result")
-    public void setResult(List<Result> result) {
-        this.result = result;
+    public void setResult(List<Chart_Result> chartResult) {
+        this.chartResult = chartResult;
     }
 
     @JsonProperty("error")
@@ -58,7 +58,7 @@ public class Chart {
     @Override
     public String toString() {
         return "Chart{" +
-                "result=" + result +
+                "result=" + chartResult +
                 ", error=" + error +
                 ", additionalProperties=" + additionalProperties +
                 '}';
