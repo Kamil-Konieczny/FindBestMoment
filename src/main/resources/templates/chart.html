@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="ISO-8859-1">
     <title>FindBestMoment</title>
@@ -14,16 +14,68 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <link href = "css/bootstrap.css" rel = "stylesheet"/>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="chart_page.css">
+    <style>
+        .interval_button {
+            border: 1px solid black;
+            color: black;
+            padding: 1% 2%;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        table, td, th {
+            border-bottom: 1px solid grey;
+            border-top: 1px solid grey;
+            padding-top: 5%;
+            padding-bottom: 5%;
+        }
+        table {
+            width: 85%;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
-<div class="header">
+<div class="header" style="border-bottom:  3px solid #e6e6e6;">
     <a th:href="@{/findbestmoment}">
         <img src="/logo1.jpg" height="50vh" style="margin-top:1%; ">
     </a>
 </div>
-<div id="chart_div" style = "width: 80%; height: 70%; paddleft: 0px;" ></div>
+<div class="interval_buttons" style="margin-left: 35%;">
+    <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='1day')}">1 day</a>
+        <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='5days')}">5 days</a>
+            <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='month')}">1 month</a>
+                <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='year')}">1 year</a>
+                    <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='5years')}">5 years</a>
+</div>
+<div id="chart_div" style = "width: 62%; height: 55%; float: left;" ></div>
+<div style="margin-left: 65%; font-size: 2.3vh;">
+    <h1>Chart analysis</h1>
+    </br>
+    <table>
+        <tr>
+            <td> <p>Price change:</p></td>
+            <td> <p  th:style="${chartAnalysis.change() &gt; 0 ? 'color:#009933; font-size:2.5vh;':'color:#cc0000;font-size:2.5vh;'}" th:text="${chartAnalysis.percentage_change()}"></p></td>
+        </tr>
+        <tr>
+            <td><p>Highest point:</p></td>
+            <td><p style=" color:#009933; font-size:2.5vh;padding-top: 1%;" th:text="${chartAnalysis.getHighest()}"></p></td>
+        </tr>
+        <tr>
+            <td><p>Lowest point:</p></td>
+            <td><p style=" color:#cc0000; font-size:2.5vh;padding-top: 1%;" th:text="${chartAnalysis.getLowest()}"></p></td>
+        </tr>
+        <tr>
+            <td><p>Biggest dip:</p></td>
+            <td><p style=" color:#009933; font-size:1.9vh;padding-top: 1%;" th:text="${chartAnalysis.biggestDip().getRange()}+${chartAnalysis.biggestDip().getChange()}"></p></td>
+        </tr>
+    </table>
+
+</div>
 </body>
 </html>
 
@@ -32,14 +84,12 @@
     google.charts.setOnLoadCallback(drawBasic);
 
     function drawBasic() {
-
         var highs = [[${highs}]];
         var timestamps = [[${timestamps}]];
         var data = new google.visualization.DataTable();
         data.addColumn('date', 'Day');
         data.addColumn('number', 'Price');
         var dataArray = [];
-
         for(var i=0;i<highs.length;i++)
         {
             var date = new Date(timestamps[i] * 1000);
@@ -48,8 +98,8 @@
         }
         data.addRows(dataArray);
         var options = {
-            hAxis: {},
-            vAxis: {}
+            'title': '[[${symbol}]]',
+            'chartArea':{left:'6%',top:'6%',bottom:'5%',right:'9%'},
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

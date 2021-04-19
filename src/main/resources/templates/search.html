@@ -32,7 +32,7 @@
 <div class = "stocks_container" >
 
     <tr th:each="stock: ${hot_stocks}">
-        <a th:href="@{/chart/{stock_symbol}(stock_symbol=${stock.symbol})}">
+        <a th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${stock.symbol},interval='1day')}">
     <div class="card">
         <div class="card_header">
             <h1 name="choosen_stock" id="choosen_stock"  th:text="${stock.symbol}" ></h1>
@@ -52,6 +52,8 @@
                     <p class ="after_hours_percentage" th:if="${stock.getPrice().getMarketState()=='POST' and stock.getPrice().getExchangeName()!='Other OTC'}" th:style="${stock.getPrice().getPostMarketChangePercent().getRaw() &gt; 0 ? 'color:#009933;':'color:#cc0000;'}"  th:text="${stock.getPrice().getPostMarketChangePercent().getFmt()}"></p>
                     <p class ="after_hours_percentage" th:if=" ${stock.getPrice().getExchangeName()=='Other OTC'}">--.--</p>
                     <p class ="after_hours_percentage" th:if="${stock.getPrice().getMarketState()=='PRE' and stock.getPrice().getExchangeName()!='Other OTC'}" th:style="${stock.getPrice().getPreMarketChangePercent().getRaw() &gt; 0 ? 'color:#009933;':'color:#cc0000;'}"  th:text="${stock.getPrice().getPreMarketChangePercent().getFmt()}"></p>
+                    <p class ="after_hours_percentage" th:if="${stock.getPrice().getMarketState()=='CLOSED'}" >--.--</p>
+
                 </div>
             </div>
         <div style="display: flex;  font-family:Arial;">Trends:</div>

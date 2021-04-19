@@ -20,17 +20,50 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class StockService {
+public class YahooApiConnection {
 
-    public Chart getChart(final String symbol)  {
+    public Chart getChart(final String symbol,String interval)  {
         try {
+            HttpRequest request = null;
+            switch(interval)
+            {
+                case "1day":
+                     request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=2m&symbol="+symbol+"&range=1d&region=US"))
+                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+                            .method("GET", HttpRequest.BodyPublishers.noBody())
+                            .build(); break;
+                case "5days":
+                    request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=2m&symbol="+symbol+"&range=5d&region=US"))
+                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+                            .method("GET", HttpRequest.BodyPublishers.noBody())
+                            .build(); break;
+                case "month":
+                    request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=15m&symbol="+symbol+"&range=1mo&region=US"))
+                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+                            .method("GET", HttpRequest.BodyPublishers.noBody())
+                            .build(); break;
+                case "year":
+                    request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol="+symbol+"&range=1y&region=US"))
+                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+                            .method("GET", HttpRequest.BodyPublishers.noBody())
+                            .build(); break;
+                case "5years":
+                    request = HttpRequest.newBuilder()
+                            .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol="+symbol+"&range=5y&region=US"))
+                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
+                            .method("GET", HttpRequest.BodyPublishers.noBody())
+                            .build(); break;
+            }
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol=AAPL&range=1mo&region=US"))
-                    .header("x-rapidapi-key", "0c937b13c3msh7628507d9c0e59dp1e12bajsn9a74a33001f8")
-                    .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
-                    .method("GET", HttpRequest.BodyPublishers.noBody())
-                    .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             HttpResponse.BodyHandlers.ofString();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -48,7 +81,7 @@ public class StockService {
     public List<Result> getMovers() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-movers?region=US&lang=en-US&start=0&count=6"))
-                .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
+                .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -62,7 +95,7 @@ public class StockService {
     public SummaryExample getSummary(String symbol) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?symbol="+symbol+"&region=US"))
-                .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
+                .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -76,7 +109,7 @@ public class StockService {
     public Auto_example auto_complete(String symbol) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete?q="+symbol+"&region=US"))
-                .header("x-rapidapi-key", "bf89918d8dmsh3c14dd2082397a0p11617bjsn9f5f5763c91e")
+                .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
