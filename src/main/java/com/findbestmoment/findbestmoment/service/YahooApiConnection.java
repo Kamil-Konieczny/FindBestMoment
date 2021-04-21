@@ -30,35 +30,35 @@ public class YahooApiConnection {
                 case "1day":
                      request = HttpRequest.newBuilder()
                             .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=2m&symbol="+symbol+"&range=1d&region=US"))
-                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                             .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                             .method("GET", HttpRequest.BodyPublishers.noBody())
                             .build(); break;
                 case "5days":
                     request = HttpRequest.newBuilder()
                             .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=2m&symbol="+symbol+"&range=5d&region=US"))
-                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                             .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                             .method("GET", HttpRequest.BodyPublishers.noBody())
                             .build(); break;
                 case "month":
                     request = HttpRequest.newBuilder()
                             .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=15m&symbol="+symbol+"&range=1mo&region=US"))
-                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                             .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                             .method("GET", HttpRequest.BodyPublishers.noBody())
                             .build(); break;
                 case "year":
                     request = HttpRequest.newBuilder()
                             .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol="+symbol+"&range=1y&region=US"))
-                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                             .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                             .method("GET", HttpRequest.BodyPublishers.noBody())
                             .build(); break;
                 case "5years":
                     request = HttpRequest.newBuilder()
                             .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-chart?interval=1d&symbol="+symbol+"&range=5y&region=US"))
-                            .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                            .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                             .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                             .method("GET", HttpRequest.BodyPublishers.noBody())
                             .build(); break;
@@ -81,7 +81,7 @@ public class YahooApiConnection {
     public List<Result> getMovers() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-movers?region=US&lang=en-US&start=0&count=6"))
-                .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -95,7 +95,7 @@ public class YahooApiConnection {
     public SummaryExample getSummary(String symbol) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary?symbol="+symbol+"&region=US"))
-                .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -109,7 +109,7 @@ public class YahooApiConnection {
     public Auto_example auto_complete(String symbol) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete?q="+symbol+"&region=US"))
-                .header("x-rapidapi-key", "cd43a4d11dmsh2d02fa34a4f646ap1d3a88jsn5fdf7b4f7ae9")
+                .header("x-rapidapi-key", "97ae9d5b94msh3c5aa2d1efd7934p1b7878jsn60ac3bba25bc")
                 .header("x-rapidapi-host", "apidojo-yahoo-finance-v1.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();

@@ -35,7 +35,6 @@ public class testApi {
         List<Integer> timestamps =null;
         String symbol =null;
         SummaryExample summaryExample = null;
-
         try {
             result = results.get(0);
             quote = result.getIndicators().getQuote();
@@ -61,6 +60,11 @@ public class testApi {
         model.addAttribute("summaryexample",summaryExample);
         model.addAttribute("symbol",summaryExample.getPrice().getShortName());
         model.addAttribute("short_symbol",symbol);
+        model.addAttribute("low",quote.get(0).getLow());
+        model.addAttribute("volume",quote.get(0).getVolume());
+        model.addAttribute("close",quote.get(0).getClose());
+        model.addAttribute("open",quote.get(0).getOpen());
+
         return "chart";
     }
 
@@ -69,14 +73,19 @@ public class testApi {
             List<Result> result = yahooApiConnection.getMovers();
             movers_summary_list.clear();
             List<Quote> movers_list = result.get(2).getQuotes();
-
-            for(int i=0;i<1;i++)
+            List<Quote> gainers_list = result.get(0).getQuotes();
+            for(int i=0;i<6;i++)
             {
                 String symbol = movers_list.get(i).getSymbol();
                 SummaryExample ex = yahooApiConnection.getSummary(symbol);
                 movers_summary_list.add(ex);
             }
-
+        for(int i=0;i<6;i++)
+        {
+            String symbol = gainers_list.get(i).getSymbol();
+            SummaryExample ex = yahooApiConnection.getSummary(symbol);
+            movers_summary_list.add(ex);
+        }
         model.addAttribute("hot_stocks",movers_summary_list);
 
         return "search";

@@ -37,6 +37,9 @@
             width: 85%;
             border-collapse: collapse;
         }
+        .point_data {
+            margin-bottom: 25%;
+        }
     </style>
 </head>
 <body>
@@ -52,7 +55,26 @@
                 <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='year')}">1 year</a>
                     <a class="interval_button" th:href="@{/chart/{stock_symbol}/{interval}(stock_symbol=${short_symbol},interval='5years')}">5 years</a>
 </div>
-<div id="chart_div" style = "width: 62%; height: 55%; float: left;" ></div>
+<div style="width: 62%;float: left;">
+<div id="chart_div" style = "width: 100%; height: 55%;" ></div>
+    <div class ="point_data" style="margin-top: 4%;margin-left: 3%; font-size: 1.9vh;">
+        <h3>Point data:<span style="color:#d9d9d9;"> ( Click on chart )</span> </h3>
+        </br>
+        <div style="float: left; ">
+        <p>Time: <span id="chart_time">0.0</span></p>
+        <p>High: <span id="chart_high">0.0</span></p>
+        </div>
+        <div style="float: left;margin-left: 15%;">
+        <p>Low: <span id="chart_low">0.0</span></p>
+        <p>Open: <span id="chart_open">0.0</span></p>
+        </div>
+        <div style="float: left;margin-left: 15%;">
+        <p>Close: <span id="chart_close">0.0</span></p>
+        <p>Volume: <span id="chart_volume">0.0</span></p>
+        </div>
+    </div>
+</div>
+
 <div style="margin-left: 65%; font-size: 2.3vh;">
     <h1>Chart analysis</h1>
     </br>
@@ -70,12 +92,17 @@
             <td><p style=" color:#cc0000; font-size:2.5vh;padding-top: 1%;" th:text="${chartAnalysis.getLowest()}"></p></td>
         </tr>
         <tr>
+            <td><p>Biggest rise:</p></td>
+            <td><p style=" color:#009933; font-size:2.5vh;padding-top: 1%;" th:text="${chartAnalysis.biggestRise().getChange()}"></p><p style="font-size:1.9vh;padding-top: 1%;" th:text="${chartAnalysis.biggestRise().getRange()}"></p></td>
+        </tr>
+        <tr>
             <td><p>Biggest dip:</p></td>
-            <td><p style=" color:#009933; font-size:1.9vh;padding-top: 1%;" th:text="${chartAnalysis.biggestDip().getRange()}+${chartAnalysis.biggestDip().getChange()}"></p></td>
+            <td><p style=" color:#cc0000; font-size:2.5vh;padding-top: 1%;" th:text="${chartAnalysis.biggestDip().getChange()}"></p><p style="font-size:1.9vh;padding-top: 1%;" th:text="${chartAnalysis.biggestDip().getRange()}"></p></td>
         </tr>
     </table>
 
 </div>
+
 </body>
 </html>
 
@@ -84,6 +111,10 @@
     google.charts.setOnLoadCallback(drawBasic);
 
     function drawBasic() {
+        var low = [[${low}]];
+        var open = [[${open}]];
+        var close = [[${close}]];
+        var volume = [[${volume}]];
         var highs = [[${highs}]];
         var timestamps = [[${timestamps}]];
         var data = new google.visualization.DataTable();
@@ -93,17 +124,39 @@
         for(var i=0;i<highs.length;i++)
         {
             var date = new Date(timestamps[i] * 1000);
-
-             dataArray.push([new Date(date),highs[i]]);
+            dataArray.push([new Date(date),highs[i]]);
         }
         data.addRows(dataArray);
         var options = {
             'title': '[[${symbol}]]',
             'chartArea':{left:'6%',top:'6%',bottom:'5%',right:'9%'},
         };
-
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 
+        function selectHandler() {
+            var selectedItem = chart.getSelection()[0];
+            if (selectedItem) {
+                var time = data.getValue(selectedItem.row, 0);
+                var month = time.getMonth();
+                var day = time.getDay();
+                if(month.length=1)
+                {
+                    month = "0"+month;
+                }
+
+                if(day.length=1)
+                {
+                    day = "0"+day;
+                }
+                document.getElementById("chart_time").innerHTML= time.getFullYear()+"."+month+"."+day+" "+time.getHours()+":"+time.getMinutes();
+                document.getElementById("chart_low").innerHTML =low[selectedItem.row].toFixed(2);
+                document.getElementById("chart_high").innerHTML =highs[selectedItem.row].toFixed(2);
+                document.getElementById("chart_open").innerHTML =open[selectedItem.row].toFixed(2);
+                document.getElementById("chart_close").innerHTML =close[selectedItem.row].toFixed(2);
+                document.getElementById("chart_volume").innerHTML =volume[selectedItem.row].toFixed(2);
+            }
+        }
+        google.visualization.events.addListener(chart, 'select', selectHandler);
         chart.draw(data, options);
     }
 

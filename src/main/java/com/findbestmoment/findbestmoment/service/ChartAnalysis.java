@@ -1,7 +1,7 @@
 package com.findbestmoment.findbestmoment.service;
 
 import com.findbestmoment.findbestmoment.pojos.chart.Chart_Result;
-import com.findbestmoment.findbestmoment.pojos.chart.BiggestDip;
+import com.findbestmoment.findbestmoment.pojos.chart.BiggestChange;
 import com.findbestmoment.findbestmoment.pojos.getAnalysis.SummaryExample;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -72,7 +72,7 @@ public class ChartAnalysis {
         DecimalFormat numberFormat = new DecimalFormat("#.00");
         return numberFormat.format(temp)+"$";
     }
-    public BiggestDip biggestDip()
+    public BiggestChange biggestRise()
     {
         List<Double> highs= result.getIndicators().getQuote().get(0).getHigh();
         List<Integer> timestamps= result.getTimestamp();
@@ -80,19 +80,59 @@ public class ChartAnalysis {
         String percentage_dip= null;
         Integer timestamp1 = timestamps.get(0);
         Integer timestamp2 = timestamps.get(1);
+        try {
+
+
+            for (int i = 0; i < highs.size() - 1; i++) {
+                if (highs.get(i + 1) - highs.get(i) > biggest_dip) {
+                    timestamp1 = timestamps.get(i);
+                    timestamp2 = timestamps.get(i + 1);
+                    DecimalFormat numberFormat = new DecimalFormat("#.00");
+
+                    biggest_dip = highs.get(i + 1) - highs.get(i);
+                    percentage_dip = numberFormat.format((biggest_dip * 100) / highs.get(i)) + "%";
+
+                }
+            }
+        }
+        catch (NullPointerException x)
+        {}
+        return new BiggestChange(percentage_dip,timestamp1,timestamp2);
+    }
+    public BiggestChange biggestDip()
+    {
+        List<Double> highs= result.getIndicators().getQuote().get(0).getHigh();
+        List<Integer> timestamps= result.getTimestamp();
+        double biggest_dip=result.getIndicators().getQuote().get(0).getHigh().get(1)-result.getIndicators().getQuote().get(0).getHigh().get(0);
+        String percentage_dip= null;
+        Integer timestamp1 = timestamps.get(0);
+        Integer timestamp2 = timestamps.get(1);
+        try {
         for(int i=0;i<highs.size()-1;i++)
         {
-             if(highs.get(i+1)-highs.get(i)>biggest_dip)
-             {
-                 timestamp1 =timestamps.get(i);
-                 timestamp2 = timestamps.get(i+1);
-                 DecimalFormat numberFormat = new DecimalFormat("#.00");
+            if(highs.get(i+1)-highs.get(i)<biggest_dip)
+            {
+                timestamp1 =timestamps.get(i);
+                timestamp2 = timestamps.get(i+1);
+                DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-                 biggest_dip = highs.get(i+1)-highs.get(i);
-                 percentage_dip = numberFormat.format((biggest_dip*100)/highs.get(i))+"%";
-             }
+                biggest_dip = highs.get(i+1)-highs.get(i);
+                percentage_dip = numberFormat.format((biggest_dip*100)/highs.get(i))+"%";
+                if(percentage_dip.startsWith(","))
+                {
+                    percentage_dip = "0"+percentage_dip;
+                }
+                else if(percentage_dip.startsWith("-,"))
+                {
+                    StringBuilder myName = new StringBuilder(percentage_dip);
+                    myName.setCharAt(0, '0');
+                    percentage_dip = "-"+percentage_dip;
+                }
+            }
         }
-
-        return new BiggestDip(percentage_dip,timestamp1,timestamp2);
+        }
+        catch (NullPointerException x)
+        {}
+        return new BiggestChange(percentage_dip,timestamp1,timestamp2);
     }
 }

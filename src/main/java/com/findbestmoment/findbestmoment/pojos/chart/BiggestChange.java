@@ -9,11 +9,11 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class BiggestDip {
+public class BiggestChange {
     String change;
     long timestamp1;
     long timestamp2;
-    public BiggestDip(String change, int timestamp1, int timestamp2) {
+    public BiggestChange(String change, int timestamp1, int timestamp2) {
         this.timestamp1 = timestamp1;
         this.timestamp2 =timestamp2;
         this.change = change;
@@ -34,7 +34,6 @@ public class BiggestDip {
     }
     public String getChange()
     {
-
         return " "+change;
     }
 }
